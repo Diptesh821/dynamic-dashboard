@@ -13,10 +13,10 @@ export default function LandingPage() {
   const [popupAccepted, setPopupAccepted] = useState(false);
 
 
-     // Configure Axios to send cookies (for JWT auth)
+  // Configure Axios to send cookies (for JWT auth)
   axios.defaults.withCredentials = true;
 
-  
+
   // Handler for user clicking "OK"
   const handleAcceptPopup = () => {
     setPopupAccepted(true);
@@ -27,67 +27,75 @@ export default function LandingPage() {
     axios.get(`${BACKEND_URL}/test/set-cookie`, {
       withCredentials: true
     })
-    .then(() => {
-      // 2. Check if the cookie was actually set
-      axios.get(`${BACKEND_URL}/test/check-cookie`, {
-        withCredentials: true
-      })
-      .then((res) => {
-        if (!res.data.hasCookie) {
-          // Cookie not received => blocked
-          setCookiesBlocked(true);
-        }
+      .then(() => {
+        // 2. Check if the cookie was actually set
+        axios.get(`${BACKEND_URL}/test/check-cookie`, {
+          withCredentials: true
+        })
+          .then((res) => {
+            if (!res.data.hasCookie) {
+              // Cookie not received => blocked
+              setCookiesBlocked(true);
+            }
+          })
+          .catch(() => setCookiesBlocked(true));
       })
       .catch(() => setCookiesBlocked(true));
-    })
-    .catch(() => setCookiesBlocked(true));
   }, []);
 
 
 
- // If cookies are blocked and user hasn't accepted the popup, show blocking popup
- if (cookiesBlocked && !popupAccepted) {
-  return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
-      <div className="bg-white p-6 rounded shadow-md max-w-md text-center">
-        <h2 className="text-2xl font-bold mb-4">Cookies Are Blocked</h2>
-        <p className="mb-4">
-          Our site requires third-party cookies for authentication. 
-          Please enable third-party cookies in your browser settings 
-          to continue. 
-        </p>
-        <p className="mb-4 font-semibold">
-          Chrome: 
-          <br /> 
-          1. Go to <code>chrome://settings/cookies</code> 
-          <br /> 
-          2. Disable &quot;Block&quot; third-party cookies
-        </p>
-        <p className="mb-4">
-          After enabling them, click &quot;OK&quot; below to proceed. 
-          If you do not enable them, you cannot use this site.
-        </p>
-        <button
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-          onClick={handleAcceptPopup}
-        >
-          OK
-        </button>
+  // If cookies are blocked and user hasn't accepted the popup, show blocking popup
+  if (cookiesBlocked && !popupAccepted) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
+        <div className="bg-white p-6 rounded shadow-md max-w-md text-center">
+          <h2 className="text-2xl font-bold mb-4">Cookies Are Blocked</h2>
+          <p className="mb-4">
+            Our site requires third-party cookies for authentication.
+            Please enable third-party cookies in your browser settings
+            to continue.
+          </p>
+          <p className="mb-4 font-semibold">
+            Chrome:
+            <br />
+            1.{" "}
+            <Link href="chrome://settings/cookies">
+              <strong>Open Chrome Cookie Settings</strong>
+            </Link>{" "}
+            or go to <em>Settings &gt; Privacy and Security &gt; Third-Party Cookies</em>
+            <br />
+            2. Scroll down to the bottom and find <em>&quot;Sites that can always use cookies&quot;</em>
+            <br />
+            3. Click &quot;Add&quot; and enter this site’s domain
+          </p>
+
+          <p className="mb-4">
+            After adding the site, click &quot;OK&quot; below to proceed.
+            If you choose not to enable third-party cookies, you will not be able to use this site.
+          </p>
+
+          <button
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            onClick={handleAcceptPopup}
+          >
+            OK
+          </button>
+        </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
 
 
 
 
   return (
     <main className="flex min-h-screen flex-col">
-      
+
       <nav className="flex items-center justify-between px-6 py-4 bg-white shadow-sm">
-        
+
         <div className="flex items-center space-x-2">
-          
+
           <Image
             src="/revoeAI-logo.png"
             alt="revoeAI Logo"
@@ -118,7 +126,7 @@ export default function LandingPage() {
           Supercharge Your Data with revoeAI
         </h1>
         <p className="text-lg text-gray-600 mb-8 text-center max-w-2xl">
-          A powerful platform to manage your data with real-time Google Sheets 
+          A powerful platform to manage your data with real-time Google Sheets
           integration, dynamic columns, and secure JWT-based authentication.
         </p>
         <div className="space-x-2">
@@ -142,7 +150,7 @@ export default function LandingPage() {
               <Badge variant="secondary" className="mb-2">Authentication</Badge>
               <h3 className="text-xl font-semibold mb-2">Secure Login & Signup</h3>
               <p className="text-gray-600">
-                Easily create an account and access your dashboard with JWT-based 
+                Easily create an account and access your dashboard with JWT-based
                 authentication. Protected routes keep your data safe.
               </p>
             </div>
@@ -150,7 +158,7 @@ export default function LandingPage() {
               <Badge variant="secondary" className="mb-2">Real-Time</Badge>
               <h3 className="text-xl font-semibold mb-2">Google Sheets Integration</h3>
               <p className="text-gray-600">
-                Fetch data from Google Sheets and display it in a dynamic table. 
+                Fetch data from Google Sheets and display it in a dynamic table.
                 Changes reflect in real-time without excessive API calls.
               </p>
             </div>
@@ -158,7 +166,7 @@ export default function LandingPage() {
               <Badge variant="secondary" className="mb-2">Flexible</Badge>
               <h3 className="text-xl font-semibold mb-2">Dynamic Columns</h3>
               <p className="text-gray-600">
-                Add new columns (Text or Date) on the fly. Keep your dashboard 
+                Add new columns (Text or Date) on the fly. Keep your dashboard
                 organized without cluttering your original Google Sheet.
               </p>
             </div>

@@ -66,7 +66,7 @@ async function handleLoginUser(req,res) {
         httpOnly: true,      
         secure: true,        
         sameSite: "none",  
-        domain: process.env.FRONTEND_URL,
+        domain: "dashweave.vercel.app",
         maxAge: 60* 60 * 1000 
       });
 

@@ -119,7 +119,7 @@ export default function Dashboard() {
       setNumColumns(0);
       setColumnDefs([]);
       setShowCreateTableForm(false);
-5368
+
     } catch (err) {
       console.error(err);
       if (err.response && err.response.status === 401) {

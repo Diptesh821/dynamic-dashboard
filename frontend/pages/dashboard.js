@@ -5,6 +5,76 @@ import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 
 export default function LandingPage() {
+
+  const [cookiesBlocked, setCookiesBlocked] = useState(false);
+  const [popupAccepted, setPopupAccepted] = useState(false);
+
+
+   
+  // Handler for user clicking "OK"
+  const handleAcceptPopup = () => {
+    setPopupAccepted(true);
+  };
+
+  useEffect(() => {
+    // 1. Attempt to set a test cookie
+    axios.get(`${BACKEND_URL}/test/set-cookie`, {
+      withCredentials: true
+    })
+    .then(() => {
+      // 2. Check if the cookie was actually set
+      axios.get(`${BACKEND_URL}/test/check-cookie`, {
+        withCredentials: true
+      })
+      .then((res) => {
+        if (!res.data.hasCookie) {
+          // Cookie not received => blocked
+          setCookiesBlocked(true);
+        }
+      })
+      .catch(() => setCookiesBlocked(true));
+    })
+    .catch(() => setCookiesBlocked(true));
+  }, []);
+
+
+
+ // If cookies are blocked and user hasn't accepted the popup, show blocking popup
+ if (cookiesBlocked && !popupAccepted) {
+  return (
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
+      <div className="bg-white p-6 rounded shadow-md max-w-md text-center">
+        <h2 className="text-2xl font-bold mb-4">Cookies Are Blocked</h2>
+        <p className="mb-4">
+          Our site requires third-party cookies for authentication. 
+          Please enable third-party cookies in your browser settings 
+          to continue. 
+        </p>
+        <p className="mb-4 font-semibold">
+          Chrome: 
+          <br /> 
+          1. Go to <code>chrome://settings/cookies</code> 
+          <br /> 
+          2. Disable &quot;Block&quot; third-party cookies
+        </p>
+        <p className="mb-4">
+          After enabling them, click &quot;OK&quot; below to proceed. 
+          If you do not enable them, you cannot use this site.
+        </p>
+        <button
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          onClick={handleAcceptPopup}
+        >
+          OK
+        </button>
+      </div>
+    </div>
+  );
+}
+
+
+
+
   return (
     <main className="flex min-h-screen flex-col">
       

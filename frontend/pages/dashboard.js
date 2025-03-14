@@ -1,5 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"

@@ -8,7 +8,12 @@ const USER=require("../models/user.js");
 */
 router.post("/logout",(req,res)=>{
     const token=req.cookies.token;
-    res.clearCookie("token");
+    res.clearCookie("token",{
+       httpOnly: true,
+       secure: true,
+       sameSite: "none",
+      
+    });
     res.status(200).send({message:"logged out successfully"});
 
 })

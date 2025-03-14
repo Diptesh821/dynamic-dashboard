@@ -60,8 +60,7 @@ export default function LandingPage() {
             Chrome:
             <br />
             1.
-              Open Chrome Cookie Settings by typing or pasting <code>chrome://settings/cookies</code> 
-                into your browser’s address bar.
+              Open Chrome Cookie Settings by typing or pasting <code>chrome://settings/cookies </code>  into your browser’s address bar.
             or go to <em>Settings &gt; Privacy and Security &gt; Third-Party Cookies</em>
             <br />
             2. You can either choose <em>&quot;Allow third-party cookies&quot; </em> or you can Scroll down to the bottom and find <em>&quot;Sites allowed to use third-party cookies&quot; </em>

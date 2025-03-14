@@ -30,14 +30,12 @@ async function getSheetData(req,res) {
         if(!req.user){
            return res.status(401).json({ error: "User not logged in" });
         }
-      
-        const sheets = await getSheetsClient();
-    
         
+        const sheets = await getSheetsClient();
         const response = await sheets.spreadsheets.values.get({
        
         spreadsheetId: process.env.GOOGLE_SHEET_ID,
-          range: "Sheet1!A:Z",
+          range: "sheet1!A:Z",
         });
     
         // response.data.values is a 2D array of rows

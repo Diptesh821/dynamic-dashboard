@@ -2,7 +2,7 @@ const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
-import { Button } from "@/components/ui/button"; // ShadcnUI-like button
+import { Button } from "@/components/ui/button"; 
 
 export default function Dashboard() {
   const router = useRouter();
@@ -249,14 +249,6 @@ export default function Dashboard() {
           <table className="w-full border-collapse border border-gray-300">
             <thead className="bg-gray-100">
               <tr>
-                {/* Render Google Sheets Headers */}
-                {sheetData.length > 0 &&
-                  sheetData[0].map((col, i) => (
-                    <th key={`sheet-${tableIndex}-${i}`} className="border p-2 font-semibold text-left">
-                      {col}
-                    </th>
-                  ))}
-
                 {/* Render Dynamic Columns for THIS table */}
                 {table.tables.length > 0 ? (
                   table.tables.map((col, i) => (

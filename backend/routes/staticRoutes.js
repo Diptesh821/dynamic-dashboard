@@ -1,3 +1,4 @@
+const isProduction = process.env.NODE_ENV === "production";
 const express=require("express"); 
 const router=express.Router();
 
@@ -8,9 +9,9 @@ const router=express.Router();
 router.post("/logout",(req,res)=>{
     const token=req.cookies.token;
     res.clearCookie("token",{
-       httpOnly: true,
-       secure: true,
-       sameSite: "none",
+       httpOnly: isProduction,
+       secure: isProduction?"none":"lax",
+       sameSite: "lax",
       
       
     });

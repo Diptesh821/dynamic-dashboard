@@ -1,6 +1,9 @@
 const USER=require("../models/user.js");
 const bcrypt=require("bcrypt");
 const {setUser}=require("../servers/auth.js")
+const isProduction = process.env.NODE_ENV === "production";
+
+
 async function handleNewUser(req,res) {
     const {name,email,password}=req.body;
     const user=await USER.findOne({email});
@@ -63,9 +66,9 @@ async function handleLoginUser(req,res) {
     }
     const token=setUser(user);
     res.cookie("token", token, {
-        httpOnly: true,      
-        secure: true,        
-        sameSite: "none",  
+        httpOnly: isProduction,
+       secure: isProduction?"none":"lax",
+       sameSite: "lax",
         maxAge: 60* 60 * 1000 
       });
 

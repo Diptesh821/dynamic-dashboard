@@ -9,9 +9,9 @@ const router=express.Router();
 router.post("/logout",(req,res)=>{
     const token=req.cookies.token;
     res.clearCookie("token",{
-       httpOnly: isProduction,
-       secure: isProduction?"none":"lax",
-       sameSite: "lax",
+       httpOnly: true,
+       secure: isProduction,
+       sameSite: isProduction?"none":"lax",
       
       
     });

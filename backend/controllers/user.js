@@ -66,9 +66,9 @@ async function handleLoginUser(req,res) {
     }
     const token=setUser(user);
     res.cookie("token", token, {
-        httpOnly: isProduction,
-       secure: isProduction?"none":"lax",
-       sameSite: "lax",
+        httpOnly: true,
+       secure: isProduction,
+       sameSite: isProduction?"none":"lax",
         maxAge: 60* 60 * 1000 
       });
 

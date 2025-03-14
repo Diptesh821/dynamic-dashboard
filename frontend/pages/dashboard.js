@@ -65,7 +65,7 @@ export default function LandingPage() {
             </Link>{" "}
             or go to <em>Settings &gt; Privacy and Security &gt; Third-Party Cookies</em>
             <br />
-            2. Scroll down to the bottom and find <em>&quot;Sites that can always use cookies&quot;</em>
+            2. Scroll down to the bottom and find <em>&quot;Sites allowed to use third-party cookies&quot;</em>
             <br />
             3. Click &quot;Add&quot; and enter this site’s domain
           </p>

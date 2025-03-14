@@ -27,9 +27,9 @@ A **Next.js + Node.js** application that demonstrates **JWT-based authentication
    - **JWT** is generated on login and set as a **cookie** in the browser.  
    - Token expires after **1 hour**; user is automatically logged out on expiry.
 
-2. **Dashboard**  
+2. **Dashboard Page**  
    - Accessible to **non-logged-in** users, showing basic site info, logo, and **login/signup** buttons.  
-   - If user is already logged in, it redirects to the main dashboard page.
+   - If user is already logged in, it redirects to the main home page and this dashboard page is not shown. In this home page , the user can create multiple tables, add new columns to an already created table and also the user can see all the tables created by him.
 
 3. **Google Sheets Integration**  
    - Users can create tables referencing a **Google Sheet**.  

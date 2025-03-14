@@ -1,6 +1,3 @@
-Below is a **comprehensive README** file you can use in your **GitHub repository**. It incorporates **all** the points you mentioned, including **setup instructions**, **environment variables**, **deployment details**, **features**, and **acknowledgments**.
-
----
 
 # **DashWeave: Fullstack Developer Intern Assignment**
 

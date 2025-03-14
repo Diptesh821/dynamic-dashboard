@@ -60,12 +60,12 @@ export default function LandingPage() {
             Chrome:
             <br />
             1.{" "}
-            <Link href="chrome://settings/cookies">
+            <a href="chrome://settings/cookies">
               <strong>Open Chrome Cookie Settings</strong>
-            </Link>{" "}
+            </a>{" "}
             or go to <em>Settings &gt; Privacy and Security &gt; Third-Party Cookies</em>
             <br />
-            2. Scroll down to the bottom and find <em>&quot;Sites allowed to use third-party cookies&quot;</em>
+            2. You can either choose <em>&quot;Allow third-party cookies&quot; </em> or you can Scroll down to the bottom and find <em>&quot;Sites allowed to use third-party cookies&quot; </em>
             <br />
             3. Click &quot;Add&quot; and enter this site’s domain
           </p>

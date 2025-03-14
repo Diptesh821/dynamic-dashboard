@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
+import axios from "axios";
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export default function LandingPage() {
@@ -12,7 +13,10 @@ export default function LandingPage() {
   const [popupAccepted, setPopupAccepted] = useState(false);
 
 
-   
+     // Configure Axios to send cookies (for JWT auth)
+  axios.defaults.withCredentials = true;
+
+  
   // Handler for user clicking "OK"
   const handleAcceptPopup = () => {
     setPopupAccepted(true);

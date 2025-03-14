@@ -16,7 +16,7 @@ export default function Login() {
         password,
       },{
         withCredentials:true
-      });
+    });
     
       router.push("/");
     } catch (err) {

@@ -43,6 +43,7 @@ return res.status(201).json({
   });
 }
 async function handleLoginUser(req,res) {
+    console.log("piku");
     const {email,password}=req.body;
     const user=await USER.findOne({
         email
@@ -61,14 +62,16 @@ async function handleLoginUser(req,res) {
             error: "Invalid email or password",
           });
     }
-   
+   console.log(user)
     const token=setUser(user);
+    console.log(token);
     res.cookie("token", token, {
         httpOnly: true,      
-        secure: false,        
+        secure: true,        
         sameSite: "strict",  
         maxAge: 60* 60 * 1000 
       });
+
 
    
     

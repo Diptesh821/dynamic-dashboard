@@ -1,6 +1,6 @@
 const USER=require("../models/user.js");
 const bcrypt=require("bcrypt");
-const {setUser,getUser}=require("../servers/auth.js")
+const {setUser}=require("../servers/auth.js")
 async function handleNewUser(req,res) {
     const {name,email,password}=req.body;
     const user=await USER.findOne({email});
@@ -43,7 +43,6 @@ return res.status(201).json({
   });
 }
 async function handleLoginUser(req,res) {
-    console.log("piku");
     const {email,password}=req.body;
     const user=await USER.findOne({
         email
@@ -62,13 +61,12 @@ async function handleLoginUser(req,res) {
             error: "Invalid email or password",
           });
     }
-   console.log(user)
     const token=setUser(user);
-    console.log(token);
     res.cookie("token", token, {
         httpOnly: true,      
         secure: true,        
         sameSite: "none",  
+        domain: process.env.FRONTEND_URL,
         maxAge: 60* 60 * 1000 
       });
 

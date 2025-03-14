@@ -1,23 +1,18 @@
-Below is an **updated README** that includes **all** previous points **plus** your new notes regarding **Google Sheets column headers** and **access**. Feel free to adjust any formatting or wording as needed.
-
----
-
 # **DashWeave: Fullstack Developer Intern Assignment**
 
-A **Next.js + Node.js** application that demonstrates **JWT-based authentication**, **Google Sheets integration**, **dynamic table creation**, and **column addition** features. Users can **create multiple tables**, each fetching data from a **publicly viewable** Google Sheet, but **column headers** must be manually defined in the site. No one can edit the sheet unless they request write access from the project owner.
+A **Next.js + Node.js** application demonstrating **JWT-based authentication**, **Google Sheets integration**, **dynamic table creation**, and **column addition** features. Users can **create multiple tables**, each fetching **data** from a specified **Google Sheet**, and add columns dynamically **without** modifying the original sheet.
 
 ---
 
 ## **Table of Contents**
-
 1. [Features](#features)  
 2. [Tech Stack](#tech-stack)  
 3. [Project Structure](#project-structure)  
 4. [Environment Variables](#environment-variables)  
 5. [Setup & Installation](#setup--installation)  
 6. [Running the Project Locally](#running-the-project-locally)  
-7. [Google Sheets Data & Access](#google-sheets-data--access)  
-8. [Deployment](#deployment)  
+7. [Deployment](#deployment)  
+8. [Google Sheets Usage & Access](#google-sheets-usage--access)  
 9. [Third-Party Cookies Notice](#third-party-cookies-notice)  
 10. [Explainer Video](#explainer-video)  
 11. [Future Improvements](#future-improvements)  
@@ -25,56 +20,56 @@ A **Next.js + Node.js** application that demonstrates **JWT-based authentication
 
 ---
 
-## **Features**
+## **1. Features**
 
 1. **User Authentication (JWT)**  
-   - **Login & Signup** pages with **password hashing**.  
-   - **JWT** is generated on login and stored as a **cookie** in the browser.  
-   - Token expires after **1 hour**; user is automatically logged out on expiry.
+   - **Login & Signup** with **password hashing**.  
+   - **JWT** is generated on login, stored in a **cookie**.  
+   - Token expires after **1 hour** → automatic logout.
 
-2. **Dashboard**  
-   - **Non-logged-in** users see a **landing page** with site info, site logo, and **login/signup** buttons.  
-   - **Logged-in** users are redirected to the **main dashboard**, which has a “Create Table” button, an “Add Column” button, and displays all tables for that user.
+2. **Public Dashboard Page**  
+   - Non-logged-in users see **site info**, **logo**, **login/signup** buttons.  
+   - Logged-in users get redirected to the **main dashboard**.
 
-3. **Google Sheets Integration**  
-   - **Rows only** are fetched from a **publicly viewable** Google Sheet.  
-   - **Column headers** must be manually specified in the site (they are **not** fetched from the sheet).  
-   - If new rows are added to the sheet, the data updates automatically (in real time or via polling).
+3. **Main Dashboard**  
+   - Lists all tables created by the **logged-in user**.  
+   - **Create Table** button to specify **number of columns** , **type of each column header** and **column headers**.  
+   - **Add Column** button to add columns to a particular table, specifying **header**, **type**, and **table number**.
 
-4. **Multiple Tables**  
-   - Each user can **create multiple tables** referencing the **same** or different parts of the Google Sheet.  
-   - Table definitions (column headers, types, etc.) are stored in MongoDB.
+4. **Google Sheets Integration**  
+   - **Data** (rows) is fetched from a single sheet (read-only).  
+   - **Column headers** are **not** fetched from Google Sheets; you must **create** them manually.  
+   - **Automatic polling**: the app calls `checkAuthAndFetchData()` every **10 seconds** using `setInterval`, so **new rows** appear without manual refresh.
 
 5. **Dynamic Column Addition**  
-   - Columns can be **added** to a **specific table** without modifying the actual Google Sheet.  
-   - Users specify **column header**, **type** (Text/Date), and **table number**.  
-   - Columns are **permanently** stored in the backend, not in the sheet.
+   - Columns added in the dashboard do **not** alter the actual Google Sheet.  
+   - They are stored in **MongoDB** and displayed at the end of the existing columns.
 
 6. **Responsive UI**  
-   - Built with **Tailwind CSS** + **ShadcnUI** for a polished, **mobile-friendly** design.
+   - Built with **Tailwind CSS** + **ShadcnUI** for a polished, **responsive** design.
 
 ---
 
-## **Tech Stack**
+## **2. Tech Stack**
 
 - **Frontend**:  
   - **Next.js** (React framework)  
-  - **Tailwind CSS** + **ShadcnUI**  
+  - **Tailwind CSS** + **ShadcnUI** for styling  
   - **Axios** for API calls
 
 - **Backend**:  
   - **Node.js (Express)**  
-  - **MongoDB** (Atlas)  
+  - **MongoDB** (hosted on MongoDB Atlas)  
   - **JWT** for authentication  
   - **Google Sheets API** for sheet data
 
 - **Deployment**:  
   - **Frontend** on **Vercel**  
-  - **Backend** on **Render**
+  - **Backend** on **Render** (free tier)
 
 ---
 
-## **Project Structure**
+## **3. Project Structure**
 
 ```
 assignment/
@@ -95,8 +90,12 @@ assignment/
 │   ├── pages/
 │   ├── public/
 │   ├── styles/
-│   ├── .env.local        # Frontend env variables
+│   ├── .env.local       # Frontend env variables
+│   ├── componenets.json
+│   ├── eslint.config.mjs
+│   ├── jsconfig.json
 │   ├── next.config.mjs
+|   ├── postcss.congfig.mjs
 │   ├── package.json
 │   └── package-lock.json
 └── README.md
@@ -104,44 +103,34 @@ assignment/
 
 ---
 
-## **Environment Variables**
+## **4. Environment Variables (production)**
 
 ### **Frontend (`.env.local`)**
-
 ```bash
 NEXT_PUBLIC_BACKEND_URL=<backend_url>
 ```
-- **NEXT_PUBLIC_BACKEND_URL**: The URL of your deployed backend (e.g., `https://dash-weave.onrender.com`).
+- **NEXT_PUBLIC_BACKEND_URL**: The URL of your deployed backend .
 
 ### **Backend (`.env`)**
-
 ```bash
-# Render sets PORT automatically, but you can default it here
-PORT=4000
-
-FRONTEND_URL=<frontend_url>  # e.g. https://dashweave.vercel.app
-MONGO_URL=<mongodb_cluster_url> # e.g. mongodb+srv://user:pass@cluster0.xxxx.mongodb.net/mydb
-JWT_SECRET=<jwt_secret_key>
-GOOGLE_SHEET_ID=<sheet_id>
-GOOGLE_SERVICE_ACCOUNT_EMAIL=<service_account_email>
-GOOGLE_PRIVATE_KEY=<private_key_escaped_as_\\n_or_url_encoded>
+PORT=<port number>                             # Render usually sets this automatically
+FRONTEND_URL=<frontend url>           # e.g. https://dashweave.vercel.app
+MONGO_URL=<mongodb_cluster_url>       # e.g. mongodb+srv://user:pass@cluster0.xxxx.mongodb.net/mydb
+JWT_SECRET=<jwt_secret_key>           # e.g. mysecret
+GOOGLE_SHEET_ID=<sheet_id>            # e.g. 1ABCxyz1234567890
+GOOGLE_SERVICE_ACCOUNT_EMAIL=<service_account_email>     # e.g. my-service@my-project.iam.gserviceaccount.com
+GOOGLE_PRIVATE_KEY=<private_key>             #e.g.  -----BEGIN PRIVATE KEY-----\nMIIEvQ...\n-----END PRIVATE KEY-----
 ```
-
-> **Note**: If your **Google Private Key** has multiline or special characters, store it with escaped `\\n` in `.env` and convert them to real newlines at runtime:
-> ```js
-> process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, "\n");
-> ```
-
 ---
 
-## **Setup & Installation**
+## **5. Setup & Installation**
 
-1. **Clone the Repository**  
+1. **Clone the Repository**
    ```bash
    git clone https://github.com/YourUsername/dashweave.git
    ```
+2. **Install Dependencies**
 
-2. **Install Dependencies**  
    **Backend**:
    ```bash
    cd assignment/backend
@@ -153,133 +142,128 @@ GOOGLE_PRIVATE_KEY=<private_key_escaped_as_\\n_or_url_encoded>
    npm install
    ```
 
-3. **Configure Environment Variables**  
-   - **Backend** (`assignment/backend/.env`):
-     ```bash
-     PORT=4000
-     FRONTEND_URL=https://dashweave.vercel.app
-     MONGO_URL=<mongodb_cluster_url>
-     JWT_SECRET=<jwt_secret_key>
-     GOOGLE_SHEET_ID=<sheet_id>
-     GOOGLE_SERVICE_ACCOUNT_EMAIL=<service_account_email>
-     GOOGLE_PRIVATE_KEY=<private_key_escaped_as_\\n>
-     ```
-   - **Frontend** (`assignment/frontend/.env.local`):
-     ```bash
-     NEXT_PUBLIC_BACKEND_URL=https://dash-weave.onrender.com
-     ```
+3. **Configure Environment Variables (developement)**
+
+   **Backend** (`assignment/backend/.env`):
+   ```bash
+   PORT=<port number>                    # e.g. 4000       
+   FRONTEND_URL=<frontend url>           # e.g.  https://localhost:3000
+   MONGO_URL=<mongodb_cluster_url>       # e.g. mongodb+srv://user:pass@cluster0.xxxx.mongodb.net/mydb(Mongo DB Atlas) or mongodb://xxx.x.x.x:xxxxx/xyz123(local Mongo)
+   JWT_SECRET=<jwt_secret_key>           # e.g. mysecret
+   GOOGLE_SHEET_ID=<sheet_id>            # e.g. 1ABCxyz1234567890
+   GOOGLE_SERVICE_ACCOUNT_EMAIL=<service_account_email>     # e.g. my-service@my-project.iam.gserviceaccount.com
+   GOOGLE_PRIVATE_KEY=<private_key>             # e.g.  -----BEGIN PRIVATE KEY-----\nMIIEvQ...\n-----END PRIVATE KEY-----
+   ```
+   **Frontend** (`assignment/frontend/.env.local`):
+   ```bash
+   NEXT_PUBLIC_BACKEND_URL= <backend-url>     # e.g. https://localhost:4000
+   ```
 
 ---
 
-## **Running the Project Locally**
+## **6. Running the Project Locally**
 
-1. **Local MongoDB (Optional)**: If using local Mongo, update `MONGO_URL` accordingly.  
+1. **Start MongoDB** (if you use local Mongo, otherwise ensure your Atlas URI is set).
 2. **Backend**:
    ```bash
    cd assignment/backend
-   npm run dev
+   npm run dev  # or npm start
    ```
-   The backend runs on `http://localhost:4000` (or the port you specify).
+   The backend typically runs on `http://localhost:4000`.
 
 3. **Frontend**:
    ```bash
-   cd ../frontend
+   cd assignment/frontend
    npm run dev
    ```
    The frontend runs on `http://localhost:3000`.
 
-4. **Open** `http://localhost:3000` in your browser.
+4. **Open** your browser at `http://localhost:3000` to view the site.
 
 ---
 
-## **Google Sheets Data & Access**
-
-1. **Column Headers Not Fetched**  
-   - Only **rows** are fetched from the sheet.  
-   - **You** must manually specify the column headers in the site (via “Create Table” or “Add Column”).
-
-2. **Single Sheet**  
-   - Currently, data is fetched from **one** specific sheet (`GOOGLE_SHEET_ID` + “Sheet1”).  
-   - **Anyone** can view the sheet (read-only).  
-   - If you want to **edit** the sheet or create new tabs within the same sheet ID, **request write access** from me:
-     - Send a **proper message** or **email** with your Google account.  
-     - I can grant you **edit permissions**.
-
-3. **Creating a New Sheet (Tab)**  
-   - If you create a **new tab** in the same sheet ID, you must **change the sheet name** in the backend code.  
-   - For that, you also need **write access** to the sheet.  
-   - If you want me to do it for you, just ask, or you can:
-     - **Clone the code** in your PC, create a **demo branch**, make changes, then **create a pull request**.
-
----
-
-## **Deployment**
+## **7. Deployment**
 
 1. **Backend** (Render):
-   - Create a new Web Service → Connect your GitHub → Set root directory to `backend`.  
-   - **Environment**:  
-     ```bash
-     PORT=4000
-     FRONTEND_URL=https://dashweave.vercel.app
-     MONGO_URL=<mongodb_cluster_url>
-     JWT_SECRET=<jwt_secret_key>
-     GOOGLE_SHEET_ID=<sheet_id>
-     GOOGLE_SERVICE_ACCOUNT_EMAIL=<service_account_email>
-     GOOGLE_PRIVATE_KEY=<private_key_escaped_as_\\n>
-     ```
-   - **Build Command**: `npm install`  
-   - **Start Command**: `node index.js` or `npm start`
+   - Create a new Web Service → Connect your GitHub → Select `assignment/backend`.
+   - Add the environment variables in **Render Dashboard** → **“Environment”**.
+   - Build command: `npm install`  
+   - Start command: `npm start` (or `node index.js`)
 
 2. **Frontend** (Vercel):
-   - Create a new project → Connect GitHub → Set root directory to `frontend`.  
-   - **Environment**:  
-     ```bash
-     NEXT_PUBLIC_BACKEND_URL=https://dash-weave.onrender.com
-     ```
-   - **Build Command**: `npm run build`  
-   - Output Directory: `.next`
+   - Create a new Vercel project → Connect your GitHub → Select `assignment/frontend`.
+   - Add environment variable in **Vercel** → `NEXT_PUBLIC_BACKEND_URL = https://your-backend.onrender.com`.
+   - Build command: `npm run build`  
+   - Output directory: `.next`
+
+3. **Test**:
+   - Visit your Vercel URL (e.g. `https://dashweave.vercel.app`).
+   - Check logs on Render to ensure requests succeed.
 
 ---
 
-## **Third-Party Cookies Notice**
+## **8. Google Sheets Usage & Access**
 
-Because **frontend** (`.vercel.app`) and **backend** (`.onrender.com`) are on **different domains**, cookies are treated as **third-party**. Browsers may block them by default. If cookies are blocked, the user **cannot log in** because the JWT cookie is not stored.
+1. **Columns from Google Sheets**  
+   - **Column headers** are **not** fetched from the sheet; you must **create** them manually in the dashboard.  
+   - **Only row data** is fetched, so new rows appear automatically without changing your code.
 
-- A **popup** notifies the user to enable third-party cookies if they want to log in.  
-- If they refuse, they **cannot** use the site.  
-- For Chrome, go to `chrome://settings/cookies` → “Sites that can always use cookies” → add the domain.
+2. **Single Sheet**  
+   - Data is fetched from **one** sheet. Anyone can **view** it (read-only), but no one can edit unless they have **write access**.
+   - If you want to edit or create a **new tab** in the same Sheet ID, you must request **write access** from me.
+
+3. **Requesting Write Access**  
+   - If you try to edit or create a new sheet tab, Google will prompt you to request access.
+   - Alternatively, **email me** with your **email address** and **reason** for editing. I’ll grant you write access if appropriate.
+
+4. **Changing the Sheet Name**  
+   - If you create another tab (e.g., “Sheet2”), update the code to fetch data from `"Sheet1!A:Z"`to `"Sheet2!A1:Z"`  in **backend/controllers/sheets.js**.
+   - To change the code, either **mail me** with the request or **clone** the repo, make a **demo branch**, and **submit a pull request**.
 
 ---
 
-## **Explainer Video**
+## **9. Third-Party Cookies Notice**
+
+Because the **frontend** (`.vercel.app`) and **backend** (`.onrender.com`) are on different domains, cookies are treated as **third-party**. Many browsers **block third-party cookies** by default.
+
+1. **Popup Warning**  
+   - If cookies are blocked, a **popup** informs the user how to **enable** third-party cookies in **Chrome** (or other browsers).
+2. **Site Functionality**  
+   - If the user does **not** enable them, they **cannot** log in (the cookie is not stored).
+3. **Long-Term Solution**  
+   - Host frontend & backend under a single domain or use token-based auth in localStorage.
+
+---
+
+## **10. Explainer Video**
 
 - **Loom Video**: [Loom Link Here](https://www.loom.com/)  
   Explains:
-  - Project structure
-  - Code walkthrough
-  - Login flow
+  - Project structure & code
+  - Login flow & JWT cookie
   - Google Sheets integration
-  - Dynamic columns
+  - Dynamic columns & multi-table logic
+  - Third-party cookie popup
+  - **Polling** for real-time updates (`setInterval` every 10 seconds)
 
 ---
 
-## **Future Improvements**
+## **11. Future Improvements**
 
-- **Single Domain**: Host both frontend & backend under one domain to avoid third-party cookie issues.  
-- **Real-Time Updates**: Implement WebSockets or real-time DB for instant sheet updates.  
-- **More Column Types**: (Dropdown, numeric, file upload, etc.).  
-- **Admin Panel**: For advanced management of tables and columns.  
-- **UI/UX Enhancements**: More ShadcnUI components, transitions, and a more polished layout.
+- **Unified Domain**: Move both frontend & backend under the same domain to avoid third-party cookie issues.  
+- **Better Real-Time Updates**: Possibly use **WebSockets** or a real-time database.  
+- **Additional Column Types**: Numeric, dropdown, file upload, etc.  
+- **Enhanced UI**: More polished design, transitions, and usage of ShadcnUI components.  
+- **Collaborative Editing**: Provide better multi-user editing with granular permissions.  
 
 ---
 
-## **Contact & Acknowledgments**
+## **12. Contact & Acknowledgments**
 
-- **Author**: Diptesh Singh (mention your contact details if needed)  
-- **Email**: atulkrsinghal654@gmail.com (For questions or sheet write-access requests)  
-- **GitHub Repo**: [Your Repo Link](https://github.com/YourUsername/dashweave)  
+- **Author**: [Diptesh Singh]  
+- **Email**: [dipteshpiku@gmail.com]  
+- **Google Sheet Access**: Email me if you want to **edit** the sheet or create new tabs.  
+- **Code Changes**: Fork or clone the repo, create a branch, and **submit a pull request**.  
 - **Note**: This project can be improved further. If given more time, I can add more features and refine the UI. Even after submission, I plan to continue working on it.
-
----
-
-**Thank you for checking out DashWeave!** Feel free to open issues or pull requests for suggestions or improvements.  
+  
+**Thank you for exploring DashWeave!** Feel free to open issues or pull requests on the GitHub repo for any suggestions or improvements.

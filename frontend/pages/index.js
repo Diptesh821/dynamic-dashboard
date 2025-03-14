@@ -195,10 +195,10 @@ export default function Dashboard() {
               <br /> 
               1. Go to <code>chrome://settings/cookies</code> 
               <br /> 
-              2. Disable "Block third-party cookies"
+              2. Disable &quot;Block&quot; third-party cookies
             </p>
             <p className="mb-4">
-              After enabling them, click "OK" below to proceed. 
+              After enabling them, click &quot;OK&quot; below to proceed. 
               If you do not enable them, you cannot use this site.
             </p>
             <button

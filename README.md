@@ -235,20 +235,8 @@ Because the **frontend** (`.vercel.app`) and **backend** (`.onrender.com`) are o
 
 ---
 
-## **10. Explainer Video**
 
-- **Loom Video**: [Loom Link Here](https://www.loom.com/)  
-  Explains:
-  - Project structure & code
-  - Login flow & JWT cookie
-  - Google Sheets integration
-  - Dynamic columns & multi-table logic
-  - Third-party cookie popup
-  - **Polling** for real-time updates (`setInterval` every 10 seconds)
-
----
-
-## **11. Future Improvements**
+## **10. Future Improvements**
 
 - **Unified Domain**: Move both frontend & backend under the same domain to avoid third-party cookie issues.  
 - **Better Real-Time Updates**: Possibly use **WebSockets** or a real-time database.  
@@ -258,7 +246,7 @@ Because the **frontend** (`.vercel.app`) and **backend** (`.onrender.com`) are o
 
 ---
 
-## **12. Contact & Acknowledgments**
+## **11. Contact & Acknowledgments**
 
 - **Author**: [Diptesh Singh]  
 - **Email**: [dipteshpiku@gmail.com]  

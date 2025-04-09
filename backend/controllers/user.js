@@ -22,7 +22,7 @@ async function handleNewUser(req,res) {
     }
     const saltrounds=10;
     const hashedpassword=await bcrypt.hash(password,saltrounds);
-    if(name==="Diptesh Singh"){
+    if(name===process.env.ADMIN_NAME){
     await USER.create({
         
         name:name,

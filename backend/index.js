@@ -36,6 +36,9 @@ app.use((req, res, next) => {
     res.set("Cache-Control", "no-store, no-cache, must-revalidate, private");
     next();
 });
+app.get('/health', (req, res) => {
+    res.status(200).send('OK');
+  });
 
 
 

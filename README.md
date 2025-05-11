@@ -1,4 +1,4 @@
-# **DashWeave: Fullstack Developer Intern Assignment**
+# **DashWeave: Fullstack Developer Assignment**
 
 A **Next.js + Node.js** application demonstrating **JWT-based authentication**, **Google Sheets integration**, **dynamic table creation**, and **column addition** features. Users can **create multiple tables**, each fetching **data** from a specified **Google Sheet**, and add columns dynamically **without** modifying the original sheet.
 
